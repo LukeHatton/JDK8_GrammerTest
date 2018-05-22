@@ -85,4 +85,23 @@ public class LambdaTest {
         Integer reduce = Stream.of(arr).reduce(0, (a, b) -> a + b);
         System.out.println(reduce);
     }
+
+    /**
+     * 测试:可变缩减(Mutable Reduction)
+     */
+    @Test
+    public void test05() {
+        /**
+         * 上一例中字符串拼接效率较低,因为需要拷贝字符串,这会消耗O(n2)时间
+         *  可以使用StringBuilder来提高字符串拼接的效率
+         */
+        List<String> list = new ArrayList<>();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        StringBuilder collect = list.stream().collect(StringBuilder::new,
+                StringBuilder::append,
+                StringBuilder::append);
+        System.out.println(collect.toString());
+    }
 }
