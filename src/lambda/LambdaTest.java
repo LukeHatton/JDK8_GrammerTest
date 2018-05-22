@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * ClassName: LambdaTest
@@ -70,12 +71,18 @@ public class LambdaTest {
      * 测试:Stream 缩减 Reduction
      */
     @Test
-    public void test04(){
+    public void test04() {
+        /****************字符串使用reduce****************/
         List<String> list = new ArrayList<>();
         list.add("a");
         list.add("b");
         list.add("c");
-        String concat = list.stream().reduce("",String::concat);
+        String concat = list.stream().reduce("", String::concat);
         System.out.println(concat);
+
+        /****************数组使用reduce****************/
+        Integer[] arr = new Integer[]{1, 2, 3, 4, 5};
+        Integer reduce = Stream.of(arr).reduce(0, (a, b) -> a + b);
+        System.out.println(reduce);
     }
 }
