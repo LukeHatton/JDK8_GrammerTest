@@ -3,7 +3,9 @@ package lambda;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
@@ -95,6 +97,7 @@ public class LambdaTest {
          * 上一例中字符串拼接效率较低,因为需要拷贝字符串,这会消耗O(n2)时间
          *  可以使用StringBuilder来提高字符串拼接的效率
          */
+        /****************collect:List->StringBuilder****************/
         List<String> list = new ArrayList<>();
         list.add("a");
         list.add("b");
@@ -103,5 +106,13 @@ public class LambdaTest {
                 StringBuilder::append,
                 StringBuilder::append);
         System.out.println(collect.toString());
+
+        /****************collect:List->HashSet****************/
+        HashSet<Object> set = list.stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
+        set.forEach(System.out::println);
+        //或者,换一种语法
+        Set<String> stringSet = new HashSet<>();
+        list.forEach(stringSet::add);
+        stringSet.forEach(System.out::println);
     }
 }
