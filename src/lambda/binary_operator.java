@@ -60,11 +60,11 @@ public class binary_operator {
     }
 
     /**
-     * 使用groupingBy
+     * 使用Collectors.groupingBy 方法作为下游收集器
      */
     @Test
     void test03() {
-        //根据身高分组,并以身高为key
+        /*===============根据身高分组,并以身高为key===============*/
         Map<Double, List<Person>> collectMap = people.stream().
                 collect(Collectors.groupingBy(Person::getTall, Collectors.toList()));
         System.out.println("身高为180.0的人有 :");
@@ -74,16 +74,46 @@ public class binary_operator {
                 collect(Collectors.groupingBy(p -> p.getName().substring(0, 1), Collectors.toList()));
         System.out.println("姓氏为\"张\"的人有 :");
         nameMap.get("张").forEach(System.out::println);
+
+        /*===============建立名字和身高的映射map(只是demo使用这种写法自找麻烦)===============*/
+        List<?> list = people.stream().collect(ArrayList::new, (a, b) -> {
+            Map<String, Double> map = new HashMap<>();
+            map.put(b.getName(), b.getTall());
+            a.add(map);
+        }, List::add);
+        list.forEach((s) -> {
+            if (s instanceof Map) {
+                Object o = ((Map) s).get("王五");
+                if (o != null) System.out.println("王五的身高是 : " + o);
+            }
+        });
     }
 
     /**
      * 测试:Collectors.summarizing
      */
     @Test
-    void test04(){
+    void test04() {
         DoubleSummaryStatistics summaryStatistics = people.stream()
                 .collect(Collectors.summarizingDouble(Person::getTall));
+        long count = summaryStatistics.getCount();
+        double average = summaryStatistics.getAverage();
+        double min = summaryStatistics.getMin();
+        double max = summaryStatistics.getMax();
+        double sum = summaryStatistics.getSum();
         System.out.println(summaryStatistics);
+    }
+
+    /**
+     * 测试:Collectors的其他方法
+     */
+    @Test
+    void test05() {
+        Double sum1 = people.stream().mapToDouble(Person::getTall).sum();
+        //换种语法
+        Double sum2 = people.stream().collect(Collectors.summingDouble(Person::getTall));
+        System.out.println(sum1);
+        System.out.println(sum2);
     }
 
 }
