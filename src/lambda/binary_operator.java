@@ -4,11 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 
 /**
  * ClassName: binary_operator
@@ -61,9 +63,27 @@ public class binary_operator {
      * 使用groupingBy
      */
     @Test
-    void test03(){
+    void test03() {
         //根据身高分组,并以身高为key
-//        people.stream().collect();
+        Map<Double, List<Person>> collectMap = people.stream().
+                collect(Collectors.groupingBy(Person::getTall, Collectors.toList()));
+        System.out.println("身高为180.0的人有 :");
+        collectMap.get(180.0).forEach(System.out::println);
+        //根据姓姓氏分组,以姓为key
+        Map<String, List<Person>> nameMap = people.stream().
+                collect(Collectors.groupingBy(p -> p.getName().substring(0, 1), Collectors.toList()));
+        System.out.println("姓氏为\"张\"的人有 :");
+        nameMap.get("张").forEach(System.out::println);
+    }
+
+    /**
+     * 测试:Collectors.summarizing
+     */
+    @Test
+    void test04(){
+        DoubleSummaryStatistics summaryStatistics = people.stream()
+                .collect(Collectors.summarizingDouble(Person::getTall));
+        System.out.println(summaryStatistics);
     }
 
 }
