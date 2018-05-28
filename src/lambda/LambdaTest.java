@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 /**
  * ClassName: LambdaTest
  * Description:
- * Author: lizhao.dev
+ * Author: lizhao
  * Date: 2018/5/21 10:19
  * History:
  * <author>          <time>          <version>          <desc>

@@ -11,11 +11,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 /**
  * ClassName: binary_operator
  * Description: 测试二元操作符
- * Author: lizhao.dev
+ * Author: lizhao
  * Date: 2018/5/22 11:04
  * History:
  * <author>          <time>          <version>          <desc>
@@ -110,10 +111,12 @@ public class binary_operator {
     @Test
     void test05() {
         Double sum1 = people.stream().mapToDouble(Person::getTall).sum();
-        //换种语法
+        //换种途径
         Double sum2 = people.stream().collect(Collectors.summingDouble(Person::getTall));
+        DoubleStream doubleStream = people.stream().mapToDouble(Person::getTall);
         System.out.println(sum1);
         System.out.println(sum2);
+        doubleStream.forEach(System.out::println);
     }
 
 }

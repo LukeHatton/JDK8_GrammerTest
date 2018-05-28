@@ -3,7 +3,7 @@ package lambda;
 /**
  * ClassName: Person
  * Description: 定义一个没有实现Comparable接口的Person类
- * Author: lizhao.dev
+ * Author: lizhao
  * Date: 2018/5/24 14:06
  * History:
  * <author>          <time>          <version>          <desc>
