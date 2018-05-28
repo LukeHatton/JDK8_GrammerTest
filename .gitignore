@@ -33,5 +33,5 @@ gen
 .gitignore
 .idea/
 mytest.iml
-out/
+out/**
 src/stream/
