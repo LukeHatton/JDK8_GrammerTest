@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
@@ -91,10 +92,38 @@ public class binary_operator {
     }
 
     /**
-     * 测试:Collectors.summarizing
+     * 使用Collectors:groupingByConcurrent 并发收集数据到一个并发数据结构中
+     * 可以用来提高无序流的处理效率
      */
     @Test
     void test04() {
+        ConcurrentMap<Double, List<Person>> collectMap = people.stream()
+                .collect(Collectors.groupingByConcurrent(Person::getTall));
+        System.out.println("----map iterator----");
+        collectMap.forEach((a, b) -> {
+            System.out.println("身高为" + a + "的人有 :");
+            b.forEach(System.out::println);
+        });
+        System.out.println("\r\n----list iterator----");
+        System.out.println("身高为180.0的人有 :");
+        collectMap.get(180.0).forEach(System.out::println);
+
+        /*===============看一看序列收集是否会影响encounter order===============*/
+        //测试证明,影响了
+        System.out.println("\r\n看一看序列收集是否会影响encounter order");
+        Map<Double, List<Person>> collect = people.stream().
+                collect(Collectors.groupingBy(Person::getTall, Collectors.toList()));
+        collect.forEach((a, b) -> {
+            System.out.println("身高为" + a + "的人有 :");
+            b.forEach(System.out::println);
+        });
+    }
+
+    /**
+     * 测试:Collectors.summarizing
+     */
+    @Test
+    void test05() {
         DoubleSummaryStatistics summaryStatistics = people.stream()
                 .collect(Collectors.summarizingDouble(Person::getTall));
         long count = summaryStatistics.getCount();
@@ -109,7 +138,7 @@ public class binary_operator {
      * 测试:Collectors的其他方法
      */
     @Test
-    void test05() {
+    void test06() {
         Double sum1 = people.stream().mapToDouble(Person::getTall).sum();
         //换种途径
         Double sum2 = people.stream().collect(Collectors.summingDouble(Person::getTall));
